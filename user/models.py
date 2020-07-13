@@ -55,7 +55,7 @@ class Education(models.Model):
        return self.degree  
 
 class Course(models.Model):
-    degree=models.ForeignKey(Education, on_delete=models.CASCADE,related_name="course") 
+    degree=models.ForeignKey(Education, on_delete=models.CASCADE,related_name="degree_course") 
     course=models.CharField(max_length=50)
 
     def __str__(self): 
@@ -67,11 +67,25 @@ class Board(models.Model):
     def __str__(self): 
        return self.board             
 
-class EducationRelUser(models.Model):
-    user_id=models.ForeignKey(UserDetails, on_delete=models.CASCADE,related_name="user_relation") 
+class EducationRelUser(models.Model): 
+    user_id=models.ForeignKey(UserDetails, on_delete=models.CASCADE,related_name="user_relation")
     degree=models.ForeignKey(Education, on_delete=models.CASCADE,related_name="degree_relation") 
     course=models.ForeignKey(Course, on_delete=models.CASCADE,related_name="course_relation")
     board=models.ForeignKey(Board, on_delete=models.CASCADE,related_name="board_relation")
 
     def __str__(self): 
-       return "Educational details Updated"       
+       return "Educational details Updated"  
+
+class Skillset(models.Model):
+    mainskill=models.CharField(max_length=50)
+    subskill=models.IntegerField()
+    
+    def __str__(self): 
+       return self.mainskill      
+
+class skillsetRel(models.Model):
+    skill_id=models.ForeignKey(Skillset, on_delete=models.CASCADE,related_name="skill") 
+    user_id=models.ForeignKey(UserDetails, on_delete=models.CASCADE,related_name="user_skill")
+    
+    def __str__(self): 
+       return "skill Relation with updated"        

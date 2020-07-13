@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'user',
     'qa',
-    'dashboard'
+    'dashboard',
+    'drf_multiple_model',
 ]
 
 REST_FRAMEWORK = {

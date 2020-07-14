@@ -1,16 +1,21 @@
 from django.urls import path
+import user.views as views
 
-from .views  import UserListView,UserDetailsView, UserCreateView, UserUpdateView, UserDeleteView, BoardCourseView, SkillsetView
 
 urlpatterns = [
-   path('',UserListView.as_view()),
-   path('education/',BoardCourseView.as_view()),
-   path('skills/',SkillsetView.as_view()),
-   path('create/',UserCreateView.as_view()),
-   path('<pk>/',UserDetailsView.as_view()),
-   path('<pk>/update/',UserUpdateView.as_view()),
-   path('<pk>/delete/',UserDeleteView.as_view()),
+   path('',views.UserListView.as_view()),
+   path('education/',views.BoardCourseView.as_view()),
+   path('addemail/',views.EmailCreateView.as_view()),
+   path('addmobile/',views.MobileCreateView.as_view()),
+   path('addskills/',views.SkillsetCreateView.as_view()),
+   path('addofficeaddress/',views.OffAddressCreateView.as_view()),
+   path('<pk>/deleteemail/',views.EmailDeleteView.as_view()),
+   path('<pk>/deletemobile/',views.MobileDeleteView.as_view()),
+   path('skills/',views.SkillsetView.as_view()),
+   path('create/',views.UserCreateView.as_view()),
+   path('<pk>/',views.UserDetailsView.as_view()),
+   path('<pk>/update/',views.UserUpdateView.as_view()),
+   path('<pk>/delete/',views.UserDeleteView.as_view()),
    
- 
 ]
 

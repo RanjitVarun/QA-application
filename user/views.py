@@ -1,43 +1,92 @@
 from django.shortcuts import render
 from rest_framework import generics, serializers, views, exceptions
-from .models import UserDetails, Email, Mobile, Board, Course, Education, Skillset, skillsetRel
-from .serializers import UserSerializer, BoardSerializer,CourseSerializer, BoardCourseSerializer,SkillSerializer
 from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from drf_multiple_model.views import ObjectMultipleModelAPIView
-
+import user.models as model
+import user.serializers as serializer
 
 class UserListView(generics.ListCreateAPIView):
-    queryset = UserDetails.objects.all()
-    serializer_class = UserSerializer
+    queryset = model.UserDetails.objects.all()
+    serializer_class = serializer.UserSerializer
     
 class UserDetailsView(generics.RetrieveAPIView):
-    queryset=UserDetails.objects.all()
-    serializer_class = UserSerializer
+    queryset=model.UserDetails.objects.all()
+    serializer_class = serializer.UserSerializer
     
 class UserCreateView(generics.CreateAPIView):
-    queryset = UserDetails.objects.all()
-    serializer_class = UserSerializer
+    queryset = model.UserDetails.objects.all()
+    serializer_class = serializer.UserSerializer
 
 class UserUpdateView(generics.UpdateAPIView):
-    queryset = UserDetails.objects.all()
-    serializer_class = UserSerializer    
+    queryset = model.UserDetails.objects.all()
+    serializer_class = serializer.UserSerializer  
 
 class UserDeleteView(generics.DestroyAPIView):
-    queryset = UserDetails.objects.all()
-    serializer_class = UserSerializer   
+    queryset = model.UserDetails.objects.all()
+    serializer_class = serializer.UserSerializer
+
+class EmailCreateView(generics.CreateAPIView):
+    queryset = model.Email.objects.all()
+    serializer_class = serializer.EmailSerializer
+
+class MobileCreateView(generics.CreateAPIView):
+    queryset = model.Mobile.objects.all()
+    serializer_class = serializer.MobileSerializer    
+
+class EmailDeleteView(generics.DestroyAPIView):
+    queryset = model.Email.objects.all()
+    serializer_class = serializer.EmailSerializer
+
+class MobileDeleteView(generics.DestroyAPIView):
+    queryset = model.Mobile.objects.all()
+    serializer_class = serializer.MobileSerializer 
+
+class SkillsetCreateView(generics.CreateAPIView):
+    queryset = model.skillsetRel.objects.all()
+    serializer_class = serializer.SkillsetSerializer   
+
+class SkillsetDeleteView(generics.DestroyAPIView):
+    queryset = model.skillsetRel.objects.all()
+    serializer_class = serializer.SkillsetSerializer 
+
+class MobileDeleteView(generics.DestroyAPIView):
+    queryset = model.Mobile.objects.all()
+    serializer_class = serializer.MobileSerializer 
 
 class BoardCourseView(APIView):
     def get(self, request, *args, **kwargs):
-          ser = BoardCourseSerializer({'board': Board.objects.all(),'course':Course.objects.all(),
-          'degree':Education.objects.all()})
+          ser = serializer.BoardCourseSerializer({'board': model.Board.objects.all(),'course':model.Course.objects.all(),
+          'degree':model.Education.objects.all()})
           return Response(ser.data)  
 
 class SkillsetView(generics.ListCreateAPIView):
-    queryset = Skillset.objects.all()
-    serializer_class =SkillSerializer
-    
+    queryset = model.Skillset.objects.all()
+    serializer_class =serializer.SkillSerializer
+
+class OffAddressCreateView(generics.CreateAPIView):
+    queryset = model.OfficeAddress.objects.all()
+    serializer_class = serializer.OffAddressSerializer   
+
+class OffAddressDeleteView(generics.DestroyAPIView):
+    queryset = model.OfficeAddress.objects.all()
+    serializer_class = serializer.OffAddressSerializer
+
+# class LoginView(generics.ListCreateAPIView):
+#     def post(self, request, *args, **kwargs):s
+#         print(request.data)
+#         serializer=LoginSerializer(data=request.data)
+#         if serializer.is_valid():
+#             return Response("valid")
+#         else:
+#             return Response("invalid")
+    #  if serializer.is_valid():
+    #     serializer.save()
+        #return Response(serializer.data, status=status.HTTP_201_CREATED)
+     #return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+     
+        
 # class SkillsetView(APIView):
 #     def get(self, request, *args, **kwargs):
 #           #ser = SkillSerializer({'skills': Skillset.objects.select_related('subskill')})

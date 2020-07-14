@@ -68,9 +68,25 @@ class OffAddressCreateView(generics.CreateAPIView):
     queryset = model.OfficeAddress.objects.all()
     serializer_class = serializer.OffAddressSerializer   
 
+class OffAddressUpdateView(generics.UpdateAPIView):
+    queryset = model.OfficeAddress.objects.all()
+    serializer_class = serializer.OffAddressSerializer
+
 class OffAddressDeleteView(generics.DestroyAPIView):
     queryset = model.OfficeAddress.objects.all()
     serializer_class = serializer.OffAddressSerializer
+
+class ResAddressCreateView(generics.CreateAPIView):
+    queryset = model.ResAddress.objects.all()
+    serializer_class = serializer.ResAddressSerializer  
+
+class ResAddressUpdateView(generics.UpdateAPIView):
+    queryset = model.ResAddress.objects.all()
+    serializer_class = serializer.ResAddressSerializer 
+
+class ResAddressDeleteView(generics.DestroyAPIView):
+    queryset = model.ResAddress.objects.all()
+    serializer_class = serializer.ResAddressSerializer    
 
 # class LoginView(generics.ListCreateAPIView):
 #     def post(self, request, *args, **kwargs):s

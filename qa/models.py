@@ -2,7 +2,7 @@ from django.db import models
 import user.models as usermodel
 
 class Question(models.Model): 
-    user_id=models.ForeignKey(usermodel.UserDetails, on_delete=models.CASCADE,related_name="question" ) 
+    user_id=models.ForeignKey(usermodel.UserDetails, on_delete=models.CASCADE,related_name="question_user" ) 
     question=models.CharField(max_length=255) 
     skill_id=models.ForeignKey(usermodel.Skillset, on_delete=models.CASCADE,related_name="question_skill" ) 
     created = models.DateTimeField(auto_now_add=True, editable=False, null=False, blank=False)
@@ -12,7 +12,7 @@ class Question(models.Model):
       return self.question 
 
 class Answer(models.Model): 
-    user_id=models.ForeignKey(usermodel.UserDetails, on_delete=models.CASCADE,related_name="answer" ) 
+    user_id=models.ForeignKey(usermodel.UserDetails, on_delete=models.CASCADE,related_name="answer_user" ) 
     answer=models.CharField(max_length=255) 
     question_id=models.ForeignKey(Question, on_delete=models.CASCADE,related_name="answer_relation" ) 
     created = models.DateTimeField(auto_now_add=True, editable=False, null=False, blank=False)

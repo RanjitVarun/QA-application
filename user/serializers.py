@@ -67,6 +67,11 @@ class SkillsetRelSerializer(serializers.ModelSerializer):
         fields = "__all__" 
         depth=1   
 
+class UserDetailsSerializer(serializers.ModelSerializer):
+    class Meta:        
+        model =   models.UserDetails   
+        fields = "__all__" 
+
 class UserSerializer(serializers.ModelSerializer):
    email = EmailSerializer(many=True, read_only=True)   
    mobile =MobileSerializer(many=True, read_only=True)  

@@ -1,3 +1,4 @@
 from django.contrib import admin
+import qa.models as model
 
-# Register your models here.
+admin.site.register(model.Question)

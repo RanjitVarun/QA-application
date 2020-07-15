@@ -1,7 +1,10 @@
 from django.urls import path
-
-from . import views
+import  qa.views as view
 
 urlpatterns = [
-    path('', views.index, name='index'),
+     path('',view.QuestionListView.as_view()),
+     path('answer/',view.AnswerListView.as_view()),
+     path('comments/',view.CommentListView.as_view()),
+     path('votes/',view.VotesListView.as_view()),
+     path('qlist/',view.QuestionDetailView.as_view()),
 ]

@@ -4,7 +4,7 @@ import user.models as usermodel
 class Question(models.Model): 
     user_id=models.ForeignKey(usermodel.UserDetails, on_delete=models.CASCADE,related_name="question" ) 
     question=models.CharField(max_length=255) 
-    skill_id=models.ForeignKey(usermodel.Skillset, on_delete=models.CASCADE,related_name="question" ) 
+    skill_id=models.ForeignKey(usermodel.Skillset, on_delete=models.CASCADE,related_name="question_skill" ) 
     created = models.DateTimeField(auto_now_add=True, editable=False, null=False, blank=False)
     last_modified = models.DateTimeField(auto_now=True, editable=False, null=False, blank=False) 
   

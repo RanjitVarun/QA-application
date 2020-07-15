@@ -55,5 +55,9 @@ class SkillQnDetailsView(generics.RetrieveAPIView):
     queryset = usermodels.Skillset.objects.all()
     serializer_class = serializer.SkillRelQuestion
 
+def Login(request):
+    print(request.data)
+    return HttpResponse("Login")
+
 def index(request):
     return HttpResponse("QA page")

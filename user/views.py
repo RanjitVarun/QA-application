@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from rest_framework import generics, serializers, views, exceptions
+from rest_framework import generics, serializers, views, exceptions,status
 from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 import user.models as model
 import user.serializers as serializer
+from django.shortcuts import get_object_or_404
 
 class UserListView(generics.ListCreateAPIView):
     queryset = model.UserDetails.objects.all()
@@ -88,18 +89,27 @@ class ResAddressDeleteView(generics.DestroyAPIView):
     queryset = model.ResAddress.objects.all()
     serializer_class = serializer.ResAddressSerializer    
 
-# class LoginView(generics.ListCreateAPIView):
-#     def post(self, request, *args, **kwargs):s
-#         print(request.data)
-#         serializer=LoginSerializer(data=request.data)
-#         if serializer.is_valid():
-#             return Response("valid")
-#         else:
-#             return Response("invalid")
+class LoginView(generics.ListCreateAPIView):
+    def post(self, request, *args, **kwargs):
+        try:
+            queryemail=model.Email.objects.get(email = request.data['email'])
+            querypass=model.UserDetails.objects.get(password = request.data['password'])
+            content={"message":"user exists"}
+            return Response(content,status=status.HTTP_200_OK)
+        except  model.Email.DoesNotExist or model.UserDetails.DoesNotExist:
+            content={"message":"user does not exists"}
+            return Response(content,status=status.HTTP_400_BAD_REQUEST)
+
+        
+    #     serializer=LoginSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         return Response("valid")
+    #     else:
+    #         return Response("invalid")
     #  if serializer.is_valid():
     #     serializer.save()
-        #return Response(serializer.data, status=status.HTTP_201_CREATED)
-     #return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #  return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
      
         

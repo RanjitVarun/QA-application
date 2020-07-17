@@ -6,10 +6,23 @@ from rest_framework.response import Response
 import user.models as model
 import user.serializers as serializer
 from django.shortcuts import get_object_or_404
+from rest_framework import permissions, status
 
 class UserListView(generics.ListCreateAPIView):
     queryset = model.UserDetails.objects.all()
     serializer_class = serializer.UserSerializer
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        status_code = status.HTTP_201_CREATED
+        response = {
+            'success' : 'True',
+            'status code' : status_code,
+            'message': 'User registered  successfully',
+            }
+        
+        return Response(response, status=status_code)
     
 class UserDetailsView(generics.RetrieveAPIView):
     queryset=model.UserDetails.objects.all()
@@ -89,16 +102,38 @@ class ResAddressDeleteView(generics.DestroyAPIView):
     queryset = model.ResAddress.objects.all()
     serializer_class = serializer.ResAddressSerializer    
 
-class LoginView(generics.ListCreateAPIView):
-    def post(self, request, *args, **kwargs):
-        try:
-            queryemail=model.Email.objects.get(email = request.data['email'])
-            querypass=model.UserDetails.objects.get(password = request.data['password'])
-            content={"message":"user exists"}
-            return Response(content,status=status.HTTP_200_OK)
-        except  model.Email.DoesNotExist or model.UserDetails.DoesNotExist:
-            content={"message":"user does not exists"}
-            return Response(content,status=status.HTTP_400_BAD_REQUEST)
+class UserLoginView(generics.RetrieveAPIView):
+    serializer_class = serializer.UserSerializerWithToken
+
+    def post(self, request):
+        serialize = self.serializer_class(data=request.data)
+        serialize.is_valid(raise_exception=True)
+        response = {
+            'success' : 'True',
+            'status code' : status.HTTP_200_OK,
+            'message': 'User logged in  successfully',
+            'token' : serialize.data['token'],
+            }
+        status_code = status.HTTP_200_OK
+
+        return Response(response, status=status_code)
+
+
+
+
+# class Login(APIView):
+#     permission_classes = (permissions.AllowAny,)
+#     def post(self, request, format=None):
+#         serialize = serializer.UserSerializerWithToken(data=request.data)
+#         if serialize.is_valid():
+#             serialize.save()
+#             return Response(serialize.data, status=status.HTTP_201_CREATED)
+#         return Response(serialize.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
 
         
     #     serializer=LoginSerializer(data=request.data)

@@ -1,5 +1,7 @@
 from rest_framework import serializers
 import user.models as models
+from rest_framework_jwt.settings import api_settings
+from django.contrib.auth import authenticate
 
 class EmailSerializer(serializers.ModelSerializer):    
     class Meta:        
@@ -79,6 +81,7 @@ class UserSerializer(serializers.ModelSerializer):
    offaddress =OffAddressSerializer(many=True, read_only=True)
    user_relation=EduRelSerializer(many=True, read_only=True)
    user_skill=SkillsetRelSerializer(many=True, read_only=True)
+  
    class Meta:
         fields = (
             'id',
@@ -92,10 +95,68 @@ class UserSerializer(serializers.ModelSerializer):
             'resaddress',
             'offaddress',
             'user_relation', 
-            'user_skill'
+            'user_skill',
         )
         model = models.UserDetails
        
 
+class UserSerializerWithToken(serializers.Serializer):
+    email = serializers.CharField(max_length=255)
+    password = serializers.CharField(max_length=128, write_only=True)
+    token = serializers.CharField(max_length=255, read_only=True)
 
+    JWT_PAYLOAD_HANDLER = api_settings.JWT_PAYLOAD_HANDLER
+    JWT_ENCODE_HANDLER = api_settings.JWT_ENCODE_HANDLER
+
+    def validate(self, data):
+        print("validate")
+        email = data.get("email", None)
+        password = data.get("password", None)
+        user = authenticate(email=email, password=password)
+        if user is None:
+            print("user if")
+            raise serializers.ValidationError(
+                'A user with this email and password is not found.'
+            )
+        try:
+            payload = JWT_PAYLOAD_HANDLER(user)
+            jwt_token = JWT_ENCODE_HANDLER(payload)
+        except User.DoesNotExist:
+            raise serializers.ValidationError(
+                'User with given email and password does not exists'
+            )
+        return {
+            'email':user.email,
+            'token': jwt_token
+        }
+
+
+
+
+
+
+
+
+
+
+
+    # def get_token(self, obj):
+    #     jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+    #     jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
+    #     payload = jwt_payload_handler(obj)
+    #     token = jwt_encode_handler(payload)
+    #     return token
+
+    # def create(self, validated_data):
+    #     password = validated_data.pop('password', None)
+    #     instance = self.Meta.model(**validated_data)
+    #     if password is not None:
+    #         instance.set_password(password)
+    #     instance.save()
+    #     return instance
+
+    # class Meta:
+    #     model = models.UserDetails
+    #     fields = ('token', 'first_name', 'password')
      

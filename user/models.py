@@ -1,12 +1,57 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 
-class UserDetails(models.Model): 
-    first_name=models.CharField(max_length=20) 
+class UserManager(BaseUserManager):
+     def create_user(self,first_name,password,email_id): 
+        if not email_id:
+            raise ValueError("User must have an email")    
+        if not password:
+            raise ValueError("User must have a password")
+        if not first_name:
+            raise ValueError("User must have a full name")
+        user = self.model(
+            email=self.normalize_email(email_id)
+        )
+        user.first_name = first_name
+        user.set_password(password)
+        user.admin = is_admin
+        user.staff = is_staff
+        user.save(using=self._db)
+        return user
+
+     def create_superuser(self,first_name,password,email_id): 
+        if not email_id:
+            raise ValueError("User must have an email")       
+        if not password:
+         raise ValueError("User must have a password")
+        if not first_name:
+            raise ValueError("User must have a full name")  
+        user = self.model(
+            email_id=self.normalize_email(email_id)
+        )
+        user.first_name = first_name
+        user.set_password(password)
+        user.admin = True
+        user.staff = True
+        user.save(using=self._db)
+        return user
+
+class UserDetails(AbstractBaseUser): 
+    email_id=models.EmailField(max_length=20,default='')
+    first_name=models.CharField(max_length=20,unique=True) 
     last_name=models.CharField(max_length=20) 
     DOB=models.DateField()
     gender=models.CharField(max_length=10)
     password=models.CharField(max_length=20) 
-  
+    USERNAME_FIELD = 'first_name'
+    REQUIRED_FIELDS = ['email_id']
+    objects = UserManager()
+# GENDER_CHOICES = (
+#         ('M', 'Male'),
+#         ('F', 'Female'),
+#     )
+
+# gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     def __str__(self): 
       return self.first_name 
 

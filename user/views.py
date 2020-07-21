@@ -11,18 +11,18 @@ from rest_framework import permissions, status
 class UserListView(generics.ListCreateAPIView):
     queryset = model.UserDetails.objects.all()
     serializer_class = serializer.UserSerializer
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        status_code = status.HTTP_201_CREATED
-        response = {
-            'success' : 'True',
-            'status code' : status_code,
-            'message': 'User registered  successfully',
-            }
+    # def post(self, request):
+    #     serializer = self.serializer_class(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save()
+    #     status_code = status.HTTP_201_CREATED
+    #     response = {
+    #         'success' : 'True',
+    #         'status code' : status_code,
+    #         'message': 'User registered  successfully',
+    #         }
         
-        return Response(response, status=status_code)
+    #     return Response(response, status=status_code)
     
 class UserDetailsView(generics.RetrieveAPIView):
     queryset=model.UserDetails.objects.all()
@@ -102,21 +102,21 @@ class ResAddressDeleteView(generics.DestroyAPIView):
     queryset = model.ResAddress.objects.all()
     serializer_class = serializer.ResAddressSerializer    
 
-class UserLoginView(generics.RetrieveAPIView):
-    serializer_class = serializer.UserSerializerWithToken
+# class UserLoginView(generics.RetrieveAPIView):
+#     serializer_class = serializer.UserSerializer
 
-    def post(self, request):
-        serialize = self.serializer_class(data=request.data)
-        serialize.is_valid(raise_exception=True)
-        response = {
-            'success' : 'True',
-            'status code' : status.HTTP_200_OK,
-            'message': 'User logged in  successfully',
-            'token' : serialize.data['token'],
-            }
-        status_code = status.HTTP_200_OK
+#     def post(self, request):
+#         serialize = self.serializer_class(data=request.data)
+#         serialize.is_valid(raise_exception=True)
+#         response = {
+#             'success' : 'True',
+#             'status code' : status.HTTP_200_OK,
+#             'message': 'User logged in  successfully',
+#             'token' : serialize.data['token'],
+#             }
+#         status_code = status.HTTP_200_OK
 
-        return Response(response, status=status_code)
+#         return Response(response, status=status_code)
 
 
 

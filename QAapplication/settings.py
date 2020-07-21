@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'userprofile',
+    'login',
     'user',
     'qa',
     'dashboard',
@@ -60,7 +62,7 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000'
 ]
 
-AUTH_USER_MODEL ='user.UserDetails'
+AUTH_USER_MODEL ='login.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

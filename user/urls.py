@@ -3,7 +3,6 @@ import user.views as views
 
 urlpatterns = [
    path('',views.UserListView.as_view()),
-   path('login/',views.UserLoginView.as_view()),
    path('education/',views.BoardCourseView.as_view()),
    path('addemail/',views.EmailCreateView.as_view()),
    path('addmobile/',views.MobileCreateView.as_view()),

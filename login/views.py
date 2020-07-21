@@ -4,6 +4,7 @@ from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 import login.serializer as serializerall
+import login.models as loginmodels
 
 
 class UserRegistrationView(CreateAPIView):
@@ -36,6 +37,7 @@ class UserLoginView(RetrieveAPIView):
             'success' : 'True',
             'status code' : status.HTTP_200_OK,
             'message': 'User logged in  successfully',
+            'user_id':serializer.data['user_id'],
             'token' : serializer.data['token'],
             }
         status_code = status.HTTP_200_OK

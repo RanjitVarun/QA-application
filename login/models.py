@@ -8,7 +8,7 @@ class UserManager(BaseUserManager):
     def create_user(self, email, password=None):
        
         if not email:
-            raise ValueError('Users Must Have an email address')
+            raise ValueError('requires email address')
 
         user = self.model(
             email=self.normalize_email(email),
@@ -20,7 +20,7 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password):
        
         if password is None:
-            raise TypeError('Superusers must have a password.')
+            raise TypeError('requires password.')
 
         user = self.create_user(email, password)
         user.is_superuser = True

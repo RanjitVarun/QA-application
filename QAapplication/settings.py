@@ -40,9 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'userprofile',
+    'userdetails',
     'login',
-    'user',
-    'qa',
     'dashboard',
     'drf_multiple_model',
 ]
@@ -102,7 +101,7 @@ WSGI_APPLICATION = 'QAapplication.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'qatest',
+        'NAME': 'qafinal',
         'USER': 'root',
         'PASSWORD': 'aspire',
         'HOST': 'localhost',

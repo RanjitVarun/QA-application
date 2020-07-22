@@ -38,11 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'usereduskill',
     'corsheaders',
     'userprofile',
     'userdetails',
     'login',
     'dashboard',
+    'userquestion',
     'drf_multiple_model',
 ]
 

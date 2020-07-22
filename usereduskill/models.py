@@ -1,44 +1,62 @@
-# from django.db import models
-# import login.models as login
+from django.db import models
+import login.models as login
 
 
-# # class Education(models.Model):
-# #     degree=models.CharField(max_length=20)
+class Education(models.Model):
+    degree=models.CharField(max_length=50)
 
-# #     def __str__(self): 
-# #        return self.degree  
+    def __str__(self): 
+       return self.degree  
 
-# # class Course(models.Model):
-# #     course=models.CharField(max_length=20)
+    class Meta:
+        db_table = "education"   
 
-# #     def __str__(self): 
-# #        return self.course 
+class Course(models.Model):
+    course=models.CharField(max_length=50)
 
-# # class Board(models.Model):
-# #     board=models.CharField(max_length=20)
+    def __str__(self): 
+       return self.course 
 
-# #     def __str__(self): 
-# #        return self.board             
+    class Meta:
+        db_table = "course"   
 
-# # class EducationRelUser(models.Model): 
-# #     user_id=models.ForeignKey(UserDetails, on_delete=models.CASCADE,related_name="user_relation")
-# #     degree=models.ForeignKey(Education, on_delete=models.CASCADE,related_name="degree_relation") 
-# #     course=models.ForeignKey(Course, on_delete=models.CASCADE,related_name="course_relation")
-# #     board=models.ForeignKey(Board, on_delete=models.CASCADE,related_name="board_relation")
+class Board(models.Model):
+    board=models.CharField(max_length=50)
 
-# #     def __str__(self): 
-# #        return '%s %s' % (self.degree, self.course)  
+    def __str__(self): 
+       return self.board 
 
-# # class Skillset(models.Model):
-# #     mainskill=models.CharField(max_length=20)
-# #     subskill=models.IntegerField()
+    class Meta:
+        db_table = "board"               
+
+class EducationRelUser(models.Model): 
+    user=models.ForeignKey(login.User, on_delete=models.CASCADE,related_name="user_relation")
+    degree=models.ForeignKey(Education, on_delete=models.CASCADE,related_name="degree_relation") 
+    course=models.ForeignKey(Course, on_delete=models.CASCADE,related_name="course_relation")
+    board=models.ForeignKey(Board, on_delete=models.CASCADE,related_name="board_relation")
+
+    def __str__(self): 
+       return '%s %s' % (self.degree, self.course)  
+
+    class Meta:
+        db_table = "educationreluser"   
+
+class Skillset(models.Model):
+    mainskill=models.CharField(max_length=50)
+    subskill=models.IntegerField()
     
-# #     def __str__(self): 
-# #        return self.mainskill      
+    def __str__(self): 
+       return self.mainskill 
 
-# # class skillsetRel(models.Model):
-# #     skill_id=models.ForeignKey(Skillset, on_delete=models.CASCADE,related_name="skill") 
-# #     user_id=models.ForeignKey(UserDetails, on_delete=models.CASCADE,related_name="user_skill")
+    class Meta:
+        db_table = "skillset"        
+
+class skillsetRel(models.Model):
+    skill=models.ForeignKey(Skillset, on_delete=models.CASCADE,related_name="skill") 
+    user=models.ForeignKey(login.User, on_delete=models.CASCADE,related_name="user_skill")
     
-# #     def __str__(self): 
-# #        return '%s %s' % (self.skill_id, self.user_id)        
+    def __str__(self): 
+       return '%s %s' % (self.skill, self.user)    
+
+    class Meta:
+        db_table = "skillsetrel"       

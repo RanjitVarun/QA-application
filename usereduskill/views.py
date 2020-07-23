@@ -11,7 +11,19 @@ from rest_framework import permissions, status
 
 class SkillsetCreateView(generics.CreateAPIView):
     queryset = model.skillsetRel.objects.all()
-    serializer_class = serializer.SkillsetSerializer   
+    serializer_class = serializer.SkillsetSerializer  
+
+class EducationCreateView(generics.ListCreateAPIView):
+    queryset = model.Education.objects.all()
+    serializer_class = serializer.EducationSerializer     
+
+class CourseCreateView(generics.ListCreateAPIView):
+    queryset = model.Course.objects.all()
+    serializer_class = serializer.CourseSerializer
+
+class BoardCreateView(generics.ListCreateAPIView):
+    queryset = model.Board.objects.all()
+    serializer_class = serializer.BoardSerializer
 
 class SkillsetDeleteView(generics.DestroyAPIView):
     queryset = model.skillsetRel.objects.all()

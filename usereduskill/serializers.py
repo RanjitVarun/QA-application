@@ -12,7 +12,7 @@ class EducationSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):    
     class Meta:        
         model =   models.Course     
-        fields = ("course","degree_id")        
+        fields = "__all__"      
         
 class BoardSerializer(serializers.ModelSerializer):    
     class Meta:        

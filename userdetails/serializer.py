@@ -25,21 +25,3 @@ class OffAddressSerializer(serializers.ModelSerializer):
         model =   userdetailmodels.OfficeAddress     
         fields = "__all__"
 
-# class UserDetailsSerializer(serializers.ModelSerializer):
-# #    email = EmailSerializer(many=True, read_only=True)   
-# #    mobile =MobileSerializer(many=True, read_only=True)  
-#    userprofile=ProfileSerializer(many=True, read_only=True)
-# #    resaddress =ResAddressSerializer(many=True, read_only=True) 
-# #    offaddress =OffAddressSerializer(many=True, read_only=True)
-   
-#    class Meta:
-#         fields = (
-            
-#             'userprofile',
-#             # 'email',
-#             # 'mobile',
-#             # 'resaddress',
-#             # 'offaddress',
-            
-#         )
-#         model = loginmodels.User

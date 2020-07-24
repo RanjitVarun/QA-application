@@ -3,6 +3,8 @@ import userdetails.views as views
 
 urlpatterns = [
    path('addemail/',views.EmailCreateView.as_view()),
+   path('resaddress/',views.ResAddressView.as_view()),
+   path('officeaddress/',views.OfficeAddressView.as_view()),
    path('addmobile/',views.MobileCreateView.as_view()),
    path('<pk>/deleteemail/',views.EmailDeleteView.as_view()),
    path('<pk>/deletemobile/',views.MobileDeleteView.as_view()),

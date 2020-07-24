@@ -17,10 +17,7 @@ class UserProfileView(RetrieveAPIView):
     def get(self, request):
         try:
             user_profile = profilemodels.UserProfile.objects.get(user=request.user)
-            user_offadd=OfficeAddress.objects.get(user=request.user)
-            addserializer=OffAddressSerializer(user_offadd)
-            user_resadd=ResAddress.objects.get(user=request.user)
-            resserializer=ResAddressSerializer(user_resadd)
+            
             status_code = status.HTTP_200_OK
             response = {
                 'success': 'true',
@@ -32,8 +29,7 @@ class UserProfileView(RetrieveAPIView):
                     'phone_number': user_profile.phone_number,
                     'age': user_profile.age,
                     'gender': user_profile.gender,
-                    'Office':addserializer.data,
-                    'Res':resserializer.data
+                    
                     }]
                 }
 

@@ -6,6 +6,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from login.serializer import UserRegistrationSerializer
 import userprofile.models as profilemodels
+from userdetails.models import Email, Mobile, OfficeAddress, ResAddress
+from userdetails.serializer import OffAddressSerializer, ResAddressSerializer
 
 class UserProfileView(RetrieveAPIView):
 
@@ -15,6 +17,10 @@ class UserProfileView(RetrieveAPIView):
     def get(self, request):
         try:
             user_profile = profilemodels.UserProfile.objects.get(user=request.user)
+            user_offadd=OfficeAddress.objects.get(user=request.user)
+            addserializer=OffAddressSerializer(user_offadd)
+            user_resadd=ResAddress.objects.get(user=request.user)
+            resserializer=ResAddressSerializer(user_resadd)
             status_code = status.HTTP_200_OK
             response = {
                 'success': 'true',
@@ -26,6 +32,8 @@ class UserProfileView(RetrieveAPIView):
                     'phone_number': user_profile.phone_number,
                     'age': user_profile.age,
                     'gender': user_profile.gender,
+                    'Office':addserializer.data,
+                    'Res':resserializer.data
                     }]
                 }
 

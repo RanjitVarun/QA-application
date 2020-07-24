@@ -50,35 +50,8 @@ class SkillsetRelSerializer(serializers.ModelSerializer):
         fields = "__all__" 
         depth=1   
 
-# # class UserDetailsSerializer(serializers.ModelSerializer):
-# #     class Meta:        
-# #         model =   models.UserDetails   
-# #         fields = "__all__" 
 
-# # class UserSerializer(serializers.ModelSerializer):
-# #    email = EmailSerializer(many=True, read_only=True)   
-# #    mobile =MobileSerializer(many=True, read_only=True)  
-# #    resaddress =ResAddressSerializer(many=True, read_only=True) 
-# #    offaddress =OffAddressSerializer(many=True, read_only=True)
-# #    user_relation=EduRelSerializer(many=True, read_only=True)
-# #    user_skill=SkillsetRelSerializer(many=True, read_only=True)
-  
-# #    class Meta:
-# #         fields = (
-# #             'id',
-# #             'first_name',
-# #             'last_name',
-# #             'DOB',
-# #             'gender',
-# #             'password', 
-# #             'email',
-# #             'mobile',
-# #             'resaddress',
-# #             'offaddress',
-# #             'user_relation', 
-# #             'user_skill',
-# #         )
-# #         model = models.UserDetails
+
        
 
 

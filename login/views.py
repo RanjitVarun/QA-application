@@ -8,9 +8,11 @@ import login.models as loginmodels
 from django.contrib.auth import authenticate, login, logout
 from rest_framework_jwt.settings import api_settings
 from django.contrib.auth.models import update_last_login
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate,login
 from userdetails.models import Email, Mobile
 from rest_framework import serializers
+from django.contrib.sessions.backends.db import SessionStore
+from django.core.exceptions import PermissionDenied 
 
 JWT_PAYLOAD_HANDLER = api_settings.JWT_PAYLOAD_HANDLER
 JWT_ENCODE_HANDLER = api_settings.JWT_ENCODE_HANDLER
@@ -34,7 +36,7 @@ class UserRegistrationView(CreateAPIView):
         
         return Response(response, status=status_code)
 
-class UserLoginView(RetrieveAPIView):
+class UserLoginView(CreateAPIView):
 
     permission_classes = (AllowAny,)
     serializer_class = serializerall.UserLoginSerializer
@@ -52,9 +54,18 @@ class UserLoginView(RetrieveAPIView):
              raise serializers.ValidationError(
                 'User with given email and password does not exists'
             )     
+
         payload = JWT_PAYLOAD_HANDLER(user)
         user_id=payload['user_id']
         jwt_token = JWT_ENCODE_HANDLER(payload)
+        if request.session['_auth_user_id'] == user_id:
+            raise PermissionDenied(
+                'User already logged In'
+            ) 
+        else:
+             pass   
+        login(request,user)
+        print(request.session['_auth_user_id'])
         update_last_login(None, user)    
         response = {
                 'success' : 'True',
@@ -66,13 +77,18 @@ class UserLoginView(RetrieveAPIView):
         return Response(response, status=status_code)
         
 
-class UserLogoutView(ListAPIView):
+class UserLogoutView(CreateAPIView):
 
-
-    def get(self, request):
+    def post(self, request):
+        try:
+          request.session['_auth_user_id']=None
+          request.session['_auth_user_hash']=None
+        except KeyError:
+         pass
         response = {
             'success' : 'True',
             'message': 'User loggedout successfully',
+            'session':request.session
             }
         
         return Response(response)

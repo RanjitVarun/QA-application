@@ -7,6 +7,8 @@ import userdetails.models as model
 import userdetails.serializer as serializer
 from django.shortcuts import get_object_or_404
 from rest_framework import permissions, status
+from django.db import Error
+from login.models import User
 
 class EmailCreateView(generics.ListCreateAPIView):
     queryset = model.Email.objects.all()
@@ -26,8 +28,8 @@ class MobileDeleteView(generics.DestroyAPIView):
 
 class OffAddressCreateView(generics.CreateAPIView):
     queryset = model.OfficeAddress.objects.all()
-    serializer_class = serializer.OffAddressSerializer   
-
+    serializer_class = serializer.OffAddressSerializer
+    
 class OffAddressUpdateView(generics.UpdateAPIView):
     queryset = model.OfficeAddress.objects.all()
     serializer_class = serializer.OffAddressSerializer
@@ -36,7 +38,7 @@ class OffAddressDeleteView(generics.DestroyAPIView):
     queryset = model.OfficeAddress.objects.all()
     serializer_class = serializer.OffAddressSerializer
 
-class ResAddressCreateView(generics.CreateAPIView):
+class ResAddressCreateView(generics.ListCreateAPIView):
     queryset = model.ResAddress.objects.all()
     serializer_class = serializer.ResAddressSerializer  
 

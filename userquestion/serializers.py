@@ -2,6 +2,7 @@ from rest_framework import serializers
 import userquestion.models as userquestionmodels
 import usereduskill.models as usereduskill
 import login.models as login
+from userprofile.serializer import ProfileSerializer
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -20,6 +21,11 @@ class VotesSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class AnswerSerializer(serializers.ModelSerializer): 
+    class Meta:        
+        model = userquestionmodels.Answer     
+        fields = "__all__"
+
+class AnswerRelSerializer(serializers.ModelSerializer): 
     comments_relation=CommentSerializer(many=True, read_only=True)
     votes_relation =VotesSerializer(many=True, read_only=True)
     class Meta:        
@@ -27,17 +33,18 @@ class AnswerSerializer(serializers.ModelSerializer):
         fields = ("id","answer","comments_relation","votes_relation")   
 
 class UserRelQuestion(serializers.ModelSerializer):
+     user=ProfileSerializer(many=True, read_only=True)
      question_user=QuestionSerializer(many=True, read_only=True)
-     answer_user=AnswerSerializer(many=True, read_only=True)
+     answer_user=AnswerRelSerializer(many=True, read_only=True)
      class Meta:
          model= login.User
          fields =(
-            'id',
-            'first_name',"question_user","answer_user") 
+            'id','user',
+            "question_user","answer_user") 
 
 class QuestionInfoSerializer(serializers.ModelSerializer):
    question_user=UserRelQuestion(many=True, read_only=True) 
-   answer_relation = AnswerSerializer(many=True, read_only=True)
+   answer_relation = AnswerRelSerializer(many=True, read_only=True)
    class Meta:
         fields = (
             "question",

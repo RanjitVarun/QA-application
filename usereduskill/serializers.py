@@ -38,17 +38,11 @@ class SkillSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class SkillsetSerializer(serializers.ModelSerializer):
-    skill=SkillSerializer(many=True, read_only=True) 
     class Meta:        
         model =   models.skillsetRel    
         fields = "__all__"
     
-class SkillsetRelSerializer(serializers.ModelSerializer):
-    skill=SkillSerializer(many=True, read_only=True) 
-    class Meta:        
-        model =   models.skillsetRel    
-        fields = "__all__" 
-        depth=1   
+ 
 
 
 

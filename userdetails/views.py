@@ -17,9 +17,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 
-class EmailCreateView(generics.CreateAPIView):
+class EmailCreateView(generics.ListCreateAPIView):
     queryset = model.Email.objects.all()
-    serializer_class = serializer.EmailSerializer
+    serializer_class = serializer.EmailSerializer  
 
 class MobileCreateView(generics.CreateAPIView):
     queryset = model.Mobile.objects.all()
@@ -86,7 +86,6 @@ class ResAddressView(RetrieveAPIView):
         return Response(response, status=status_code)
 
 
-
 class OfficeAddressView(RetrieveAPIView):
 
     permission_classes = (IsAuthenticated,)
@@ -102,10 +101,7 @@ class OfficeAddressView(RetrieveAPIView):
                 'status code': status_code,
                 'message': 'User profile fetched successfully',
                 'data': [{
-                    'address':serialize.data
-                    
-                    }]
-                }
+                'address':serialize.data }]}
 
         except Exception as e:
             status_code = status.HTTP_400_BAD_REQUEST

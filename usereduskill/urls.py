@@ -3,6 +3,7 @@ import usereduskill.views as views
 
 urlpatterns = [
    path('education/',views.BoardCourseView.as_view()),
+   path('usereducation/',views.UserEducationView.as_view()),
    path('addskills/',views.SkillsetCreateView.as_view()),
    path('addeducation/',views.EducationCreateView.as_view()),
    path('addcourse/',views.CourseCreateView.as_view()),

@@ -6,10 +6,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 import usereduskill.models as model
 import usereduskill.serializers as serializer
-from django.shortcuts import get_object_or_404
 from rest_framework import permissions, status
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-class SkillsetCreateView(generics.CreateAPIView):
+class SkillsetCreateView(generics.ListCreateAPIView):
     queryset = model.skillsetRel.objects.all()
     serializer_class = serializer.SkillsetSerializer  
 
@@ -37,11 +39,36 @@ class BoardCourseView(APIView):
 
 class SkillsetView(generics.ListCreateAPIView):
     queryset = model.Skillset.objects.all()
-    serializer_class =serializer.SkillSerializer
+    serializer_class =serializer.SkillsetSerializer
 
 
+class UserEducationView(generics.RetrieveAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_class = JSONWebTokenAuthentication
 
+    def get(self, request):
+        try:
+            user_rel = model.EducationRelUser.objects.get(user=request.user)
+            serialize=serializer.EduRelSerializer(user_rel)
+            status_code = status.HTTP_200_OK
+            response = {
+                'success': 'true',
+                'status code': status_code,
+                'message': 'User Education fetched successfully',
+                'data': [{
+                    'address':serialize.data }] }
 
+        except Exception as e:
+            status_code = status.HTTP_400_BAD_REQUEST
+            response = {
+                'success': 'false',
+                'status code': status.HTTP_400_BAD_REQUEST,
+                'message': 'No Education added for this user',
+                'error': str(e)
+                }
+        return Response(response, status=status_code)
+    
+          
 
 
 

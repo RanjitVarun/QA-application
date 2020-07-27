@@ -3,7 +3,7 @@ import login.models as login
 
 
 class Education(models.Model):
-    degree=models.CharField(max_length=50)
+    degree=models.CharField(max_length=50,)
 
     def __str__(self): 
        return self.degree  

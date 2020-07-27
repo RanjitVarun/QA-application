@@ -2,13 +2,13 @@ from rest_framework import serializers
 import userquestion.models as userquestionmodels
 import usereduskill.models as usereduskill
 import login.models as login
+import userprofile.models as profile
 from userprofile.serializer import ProfileSerializer
-
 
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:        
-        model = userquestionmodels.Question      
-        fields = "__all__"
+        model = userquestionmodels.Question 
+        fields="__all__"
 
 class CommentSerializer(serializers.ModelSerializer):  
     class Meta:        
@@ -30,24 +30,26 @@ class AnswerRelSerializer(serializers.ModelSerializer):
     votes_relation =VotesSerializer(many=True, read_only=True)
     class Meta:        
         model = userquestionmodels.Answer     
-        fields = ("id","answer","comments_relation","votes_relation")   
+        fields = ("id","user","answer","comments_relation","votes_relation")   
 
 class UserRelQuestion(serializers.ModelSerializer):
-     #profile=ProfileSerializer(many=True, read_only=True)
+     profile=ProfileSerializer(read_only=True)
      question_user=QuestionSerializer(many=True, read_only=True)
      answer_user=AnswerRelSerializer(many=True, read_only=True)
      class Meta:
          model= login.User
          fields =(
-            'id',
+            'id','profile',
             "question_user","answer_user") 
 
 class QuestionInfoSerializer(serializers.ModelSerializer):
+   
    question_user=UserRelQuestion(many=True, read_only=True) 
    answer_relation = AnswerRelSerializer(many=True, read_only=True)
    class Meta:
         fields = (
             "question",
+            'user',
             "answer_relation",
             "question_user"
         )
@@ -58,3 +60,5 @@ class SkillRelQuestion(serializers.ModelSerializer):
      class Meta:
          model= usereduskill.Skillset
          fields =("mainskill","question_skill")        
+
+         

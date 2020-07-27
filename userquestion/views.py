@@ -44,7 +44,7 @@ class VoteDeleteView(generics.DestroyAPIView):
     queryset =  model.Votes.objects.all()
     serializer_class =serializer.VotesSerializer
 
-class UserQnListView(generics.ListCreateAPIView):
+class UserQnListView(generics.RetrieveAPIView):
     queryset = usermodels.User.objects.all()
     serializer_class = serializer.UserRelQuestion
 

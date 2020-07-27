@@ -33,13 +33,13 @@ class AnswerRelSerializer(serializers.ModelSerializer):
         fields = ("id","answer","comments_relation","votes_relation")   
 
 class UserRelQuestion(serializers.ModelSerializer):
-     user=ProfileSerializer(many=True, read_only=True)
+     #profile=ProfileSerializer(many=True, read_only=True)
      question_user=QuestionSerializer(many=True, read_only=True)
      answer_user=AnswerRelSerializer(many=True, read_only=True)
      class Meta:
          model= login.User
          fields =(
-            'id','user',
+            'id',
             "question_user","answer_user") 
 
 class QuestionInfoSerializer(serializers.ModelSerializer):

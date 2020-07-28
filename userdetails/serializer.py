@@ -8,12 +8,24 @@ from userprofile.serializer import ProfileSerializer
 class EmailSerializer(serializers.ModelSerializer):    
     class Meta:        
         model = userdetailmodels.Email       
-        fields = "__all__"
+        fields = ("id","email")
+
+class EmailUserSerializer(serializers.ModelSerializer):
+    emails=EmailSerializer(many=True, read_only=True)    
+    class Meta:        
+        model = loginmodels.User      
+        fields = ("emails","id")       
 
 class MobileSerializer(serializers.ModelSerializer):    
     class Meta:        
         model = userdetailmodels.Mobile        
-        fields = "__all__"
+        fields = ("id","mobile")
+
+class MobileUserSerializer(serializers.ModelSerializer):
+    mobiles=MobileSerializer(many=True, read_only=True)    
+    class Meta:        
+        model = loginmodels.User      
+        fields = ("mobiles","id") 
 
 class ResAddressSerializer(serializers.ModelSerializer):    
     class Meta:        

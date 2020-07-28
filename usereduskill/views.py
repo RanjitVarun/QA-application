@@ -11,35 +11,39 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
+#skill and skilluserrelation 
 class SkillsetCreateView(generics.ListCreateAPIView):
     queryset = model.skillsetRel.objects.all()
     serializer_class = serializer.SkillsetSerializer  
 
-class EducationCreateView(generics.ListCreateAPIView):
-    queryset = model.Education.objects.all()
-    serializer_class = serializer.EducationSerializer     
-
-class CourseCreateView(generics.ListCreateAPIView):
-    queryset = model.Course.objects.all()
-    serializer_class = serializer.CourseSerializer
-
-class BoardCreateView(generics.ListCreateAPIView):
-    queryset = model.Board.objects.all()
-    serializer_class = serializer.BoardSerializer
+class SkillsetView(generics.ListCreateAPIView):
+    queryset = model.Skillset.objects.all()
+    serializer_class = serializer.SkillSerializer
 
 class SkillsetDeleteView(generics.DestroyAPIView):
     queryset = model.skillsetRel.objects.all()
-    serializer_class = serializer.SkillsetSerializer 
+    serializer_class = serializer.SkillsetSerializer         
+
+#education, board, course related view
+
+class EducationCreateView(generics.CreateAPIView):
+    queryset = model.Education.objects.all()
+    serializer_class = serializer.EducationSerializer     
+
+class CourseCreateView(generics.CreateAPIView):
+    queryset = model.Course.objects.all()
+    serializer_class = serializer.CourseSerializer
+
+class BoardCreateView(generics.CreateAPIView):
+    queryset = model.Board.objects.all()
+    serializer_class = serializer.BoardSerializer
+
 
 class BoardCourseView(APIView):
     def get(self, request, *args, **kwargs):
           ser = serializer.BoardCourseSerializer({'board': model.Board.objects.all(),'course':model.Course.objects.all(),
           'degree':model.Education.objects.all()})
           return Response(ser.data)  
-
-class SkillsetView(generics.ListCreateAPIView):
-    queryset = model.Skillset.objects.all()
-    serializer_class =serializer.SkillsetSerializer
 
 
 class UserEducationView(generics.RetrieveAPIView):

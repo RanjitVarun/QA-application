@@ -14,7 +14,7 @@ from rest_framework import serializers
 from django.contrib.sessions.backends.db import SessionStore
 from django.core.exceptions import PermissionDenied 
 from django.contrib.auth.hashers import check_password
-from django.http import JsonResponse
+
 
 JWT_PAYLOAD_HANDLER = api_settings.JWT_PAYLOAD_HANDLER
 JWT_ENCODE_HANDLER = api_settings.JWT_ENCODE_HANDLER
@@ -56,7 +56,7 @@ class UserLoginView(CreateAPIView):
                 if here is False:
                     raise serializers.ValidationError(
                   'password does not exists'
-                  )   
+                  )        
             except Email.DoesNotExist or User.DoesNotExist:
                raise serializers.ValidationError(
                 'User with given email and password does not exists'
@@ -86,7 +86,7 @@ class UserLoginView(CreateAPIView):
 class UserLogoutView(CreateAPIView):
 
     def post(self, request):
-        try:
+        try: 
           request.session['_auth_user_id']=None
           request.session['_auth_user_hash']=None
         except KeyError:
@@ -100,11 +100,29 @@ class UserLogoutView(CreateAPIView):
         return Response(response)
 
 
-# def handler404(request,exception):
-#     print("calling")
-#     return JsonResponse({'detail': "The resource was not found",'status_code': 404}, status=404)
-   
+class ForgotPassword(CreateAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = serializerall.UserLoginSerializer
 
-# def handler500(request):
-#     return JsonResponse({'detail': "Internal Server Error",'status_code': 500}, status=500)
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            user=User.objects.get(email=request.data['email'])
+            user.set_password(request.data['password'])
+            user.save()
+        except  User.DoesNotExist:
+               raise serializers.ValidationError(
+                'User with given email Does not exist'
+            )       
+        response = {
+                'success' : 'True',
+                'status code' : status.HTTP_200_OK,
+                'message': 'Password updated successfully',
+               }    
+        status_code = status.HTTP_200_OK
+        return Response(response, status=status_code)
+
+
+
     

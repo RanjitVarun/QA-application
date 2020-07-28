@@ -1,6 +1,8 @@
 from django.urls import path
 import  userquestion.views as view
 
+
+
 urlpatterns = [
      path('',view.QuestionListView.as_view()),
      path('<pk>/delete/',view.QuestionDeleteView.as_view()),
@@ -14,4 +16,5 @@ urlpatterns = [
      path('skillqlist/',view.SkillQnListView.as_view()),
      path('<pk>/skillqlist/',view.SkillQnDetailsView.as_view()),
      path('qlist/',view.QuestionDetailView.as_view()),  
+      
 ]

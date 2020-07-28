@@ -15,15 +15,24 @@ from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from login.models import User
 
 
-class EmailCreateView(generics.ListCreateAPIView):
+class EmailCreateView(generics.CreateAPIView):
     queryset = model.Email.objects.all()
     serializer_class = serializer.EmailSerializer  
 
-class MobileCreateView(generics.CreateAPIView):
+class EmailList(RetrieveAPIView):
+    queryset=User.objects.all()
+    serializer_class=serializer.EmailUserSerializer
+
+class MobileCreateView(generics.ListCreateAPIView):
     queryset = model.Mobile.objects.all()
-    serializer_class = serializer.MobileSerializer    
+    serializer_class = serializer.MobileSerializer   
+
+class MobileList(RetrieveAPIView):
+    queryset=User.objects.all()
+    serializer_class=serializer.MobileUserSerializer    
 
 class EmailDeleteView(generics.DestroyAPIView):
     queryset = model.Email.objects.all()
@@ -66,12 +75,13 @@ class ResAddressView(RetrieveAPIView):
     def get(self, request):
         try:
             user_address = model.ResAddress.objects.get(user=request.user)
+            print(request.user)
             serialize=serializer.ResAddressSerializer(user_address)
             status_code = status.HTTP_200_OK
             response = {
                 'success': 'true',
                 'status code': status_code,
-                'message': 'User profile fetched successfully',
+                'message': 'User Residential Address fetched successfully',
                 'data': [{
                     'address':serialize.data }] }
 
@@ -99,7 +109,7 @@ class OfficeAddressView(RetrieveAPIView):
             response = {
                 'success': 'true',
                 'status code': status_code,
-                'message': 'User profile fetched successfully',
+                'message': 'User Office Address fetched successfully',
                 'data': [{
                 'address':serialize.data }]}
 

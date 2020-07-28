@@ -12,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 #skill and skilluserrelation 
+
 class SkillsetCreateView(generics.ListCreateAPIView):
     queryset = model.skillsetRel.objects.all()
     serializer_class = serializer.SkillsetSerializer  
@@ -45,6 +46,9 @@ class BoardCourseView(APIView):
           'degree':model.Education.objects.all()})
           return Response(ser.data)  
 
+class AddUserEducationView(generics.CreateAPIView):
+    queryset = model.EducationRelUser.objects.all()
+    serializer_class = serializer.EduSerializer
 
 class UserEducationView(generics.RetrieveAPIView):
     permission_classes = (IsAuthenticated,)
@@ -52,15 +56,14 @@ class UserEducationView(generics.RetrieveAPIView):
 
     def get(self, request):
         try:
-            user_rel = model.EducationRelUser.objects.get(user=request.user)
+            user_rel = model.EducationRelUser.objects.filter(user=request.user)
             serialize=serializer.EduRelSerializer(user_rel)
             status_code = status.HTTP_200_OK
             response = {
                 'success': 'true',
                 'status code': status_code,
                 'message': 'User Education fetched successfully',
-                'data': [{
-                    'address':serialize.data }] }
+                'data':serialize.data }
 
         except Exception as e:
             status_code = status.HTTP_400_BAD_REQUEST

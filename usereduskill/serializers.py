@@ -24,8 +24,14 @@ class BoardCourseSerializer(serializers.Serializer):
     course = CourseSerializer(many=True, read_only=True)
     degree= EducationSerializer(many=True, read_only=True)
     class Meta:          
-        fields = "__all__"        
-     
+        fields = "__all__"    
+
+class EduSerializer(serializers.ModelSerializer):
+    class Meta:        
+        model =   models.EducationRelUser    
+        fields = "__all__" 
+        
+
 class EduRelSerializer(serializers.ModelSerializer):
     class Meta:        
         model =   models.EducationRelUser    

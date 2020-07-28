@@ -39,6 +39,7 @@ class EducationRelUser(models.Model):
        return '%s %s' % (self.degree, self.course)  
 
     class Meta:
+        unique_together = ["user", "degree", "course","board"]
         db_table = "educationreluser"   
 
 class Skillset(models.Model):
@@ -59,4 +60,5 @@ class skillsetRel(models.Model):
        return '%s %s' % (self.skill, self.user)    
 
     class Meta:
+        unique_together = ["skill","user"]
         db_table = "skillsetrel"       

@@ -2,7 +2,7 @@ from rest_framework import serializers
 import usereduskill.models as models
 from rest_framework_jwt.settings import api_settings
 from django.contrib.auth import authenticate
-import login.models as loginmodels
+from login.models import User
 
 class EducationSerializer(serializers.ModelSerializer):    
     class Meta:        
@@ -35,9 +35,9 @@ class EduSerializer(serializers.ModelSerializer):
 class EduRelSerializer(serializers.ModelSerializer):
     class Meta:        
         model =   models.EducationRelUser    
-        fields = ("course","board","degree")  
-        depth = 1 
-
+        fields = ("course","board","degree") 
+        depth = 1
+       
 class SkillSerializer(serializers.ModelSerializer):
     class Meta:        
         model =   models.Skillset    
@@ -47,8 +47,15 @@ class SkillsetSerializer(serializers.ModelSerializer):
     class Meta:        
         model =   models.skillsetRel    
         fields = "__all__"
+
+class SkillRelSerializer(serializers.ModelSerializer):
+    skill=SkillSerializer()
+    class Meta:        
+        model =   models.skillsetRel    
+        fields = ("user","skill")       
+     
     
- 
+
 
 
 

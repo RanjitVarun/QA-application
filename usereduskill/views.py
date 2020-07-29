@@ -10,12 +10,17 @@ from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from login.models import User
 
 #skill and skilluserrelation 
 
-class SkillsetCreateView(generics.ListCreateAPIView):
+class SkillsetCreateView(generics.CreateAPIView):
     queryset = model.skillsetRel.objects.all()
     serializer_class = serializer.SkillsetSerializer  
+
+class SkillUserView(generics.ListAPIView):
+    queryset =model.skillsetRel.objects.all()
+    serializer_class = serializer.SkillRelSerializer   
 
 class SkillsetView(generics.ListCreateAPIView):
     queryset = model.Skillset.objects.all()
@@ -39,7 +44,6 @@ class BoardCreateView(generics.CreateAPIView):
     queryset = model.Board.objects.all()
     serializer_class = serializer.BoardSerializer
 
-
 class BoardCourseView(APIView):
     def get(self, request, *args, **kwargs):
           ser = serializer.BoardCourseSerializer({'board': model.Board.objects.all(),'course':model.Course.objects.all(),
@@ -56,7 +60,7 @@ class UserEducationView(generics.RetrieveAPIView):
 
     def get(self, request):
         try:
-            user_rel = model.EducationRelUser.objects.filter(user=request.user)
+            user_rel = model.EducationRelUser.objects.get(user=request.user)
             serialize=serializer.EduRelSerializer(user_rel)
             status_code = status.HTTP_200_OK
             response = {

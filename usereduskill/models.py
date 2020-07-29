@@ -53,7 +53,7 @@ class Skillset(models.Model):
         db_table = "skillset"        
 
 class skillsetRel(models.Model):
-    skill=models.ForeignKey(Skillset, on_delete=models.CASCADE,related_name="skill") 
+    skill=models.ForeignKey(Skillset, on_delete=models.CASCADE,related_name="skill_set") 
     user=models.ForeignKey(login.User, on_delete=models.CASCADE,related_name="user_skill")
     
     def __str__(self): 

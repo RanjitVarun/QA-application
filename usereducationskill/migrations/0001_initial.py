@@ -59,7 +59,7 @@ class Migration(migrations.Migration):
             name='skillsetRel',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('skill', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='skill', to='usereduskill.Skillset')),
+                ('skill', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='skill', to='usereducationskill.Skillset')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user_skill', to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -70,9 +70,9 @@ class Migration(migrations.Migration):
             name='EducationRelUser',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('board', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='board_relation', to='usereduskill.Board')),
-                ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='course_relation', to='usereduskill.Course')),
-                ('degree', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='degree_relation', to='usereduskill.Education')),
+                ('board', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='board_relation', to='usereducationskill.Board')),
+                ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='course_relation', to='usereducationskill.Course')),
+                ('degree', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='degree_relation', to='usereducationskill.Education')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user_relation', to=settings.AUTH_USER_MODEL)),
             ],
             options={

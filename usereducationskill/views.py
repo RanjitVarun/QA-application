@@ -4,8 +4,10 @@ from rest_framework import generics, serializers, views, exceptions,status
 from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
-import usereduskill.models as model
-import usereduskill.serializers as serializer
+from usereducationskill.models import Board,Course,Education,EducationRelUser,Skillset,skillsetRel
+import usereducationskill.serializers as serializer
+from usereducationskill.serializers import (SkillsetSerializer,SkillRelSerializer,SkillSerializer,EducationSerializer,CourseSerializer,BoardSerializer,
+BoardCourseSerializer,EducationSerializer,EducationRelUser,EduRelSerializer, EduSerializer)
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -15,44 +17,44 @@ from login.models import User
 #skill and skilluserrelation 
 
 class SkillsetCreateView(generics.CreateAPIView):
-    queryset = model.skillsetRel.objects.all()
-    serializer_class = serializer.SkillsetSerializer  
+    queryset = skillsetRel.objects.all()
+    serializer_class = SkillsetSerializer  
 
 class SkillUserView(generics.ListAPIView):
-    queryset =model.skillsetRel.objects.all()
-    serializer_class = serializer.SkillRelSerializer   
+    queryset =skillsetRel.objects.all()
+    serializer_class = SkillRelSerializer   
 
 class SkillsetView(generics.ListCreateAPIView):
-    queryset = model.Skillset.objects.all()
-    serializer_class = serializer.SkillSerializer
+    queryset = Skillset.objects.all()
+    serializer_class = SkillSerializer
 
 class SkillsetDeleteView(generics.DestroyAPIView):
-    queryset = model.skillsetRel.objects.all()
-    serializer_class = serializer.SkillsetSerializer         
+    queryset = skillsetRel.objects.all()
+    serializer_class = SkillsetSerializer         
 
 #education, board, course related view
 
 class EducationCreateView(generics.CreateAPIView):
-    queryset = model.Education.objects.all()
-    serializer_class = serializer.EducationSerializer     
+    queryset = Education.objects.all()
+    serializer_class =EducationSerializer     
 
 class CourseCreateView(generics.CreateAPIView):
-    queryset = model.Course.objects.all()
-    serializer_class = serializer.CourseSerializer
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
 
 class BoardCreateView(generics.CreateAPIView):
-    queryset = model.Board.objects.all()
-    serializer_class = serializer.BoardSerializer
+    queryset =Board.objects.all()
+    serializer_class = BoardSerializer
 
 class BoardCourseView(APIView):
     def get(self, request, *args, **kwargs):
-          ser = serializer.BoardCourseSerializer({'board': model.Board.objects.all(),'course':model.Course.objects.all(),
-          'degree':model.Education.objects.all()})
+          ser = BoardCourseSerializer({'board': Board.objects.all(),'course':Course.objects.all(),
+          'degree':Education.objects.all()})
           return Response(ser.data)  
 
 class AddUserEducationView(generics.CreateAPIView):
-    queryset = model.EducationRelUser.objects.all()
-    serializer_class = serializer.EduSerializer
+    queryset = EducationRelUser.objects.all()
+    serializer_class = EduSerializer
 
 class UserEducationView(generics.RetrieveAPIView):
     permission_classes = (IsAuthenticated,)
@@ -60,8 +62,8 @@ class UserEducationView(generics.RetrieveAPIView):
 
     def get(self, request):
         try:
-            user_rel = model.EducationRelUser.objects.get(user=request.user)
-            serialize=serializer.EduRelSerializer(user_rel)
+            user_rel = EducationRelUser.objects.get(user=request.user)
+            serialize=EduRelSerializer(user_rel)
             status_code = status.HTTP_200_OK
             response = {
                 'success': 'true',

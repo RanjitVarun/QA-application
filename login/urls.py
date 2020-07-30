@@ -1,10 +1,10 @@
 from django.urls import path
-import login.views as views
+from login.views import UserRegistrationView,UserLoginView,UserLogoutView,ForgotPassword
 
 urlpatterns = [
-   path('signup/',views.UserRegistrationView.as_view()),
-   path('signin/',views.UserLoginView.as_view()),
-   path('signout/',views.UserLogoutView.as_view()),
-   path('forgotpassword/',views.ForgotPassword.as_view()),
+   path('signup/',UserRegistrationView.as_view()),
+   path('signin/',UserLoginView.as_view()),
+   path('signout/',UserLogoutView.as_view()),
+   path('forgotpassword/',ForgotPassword.as_view()),
 ]
 

@@ -38,7 +38,7 @@ class UserProfileView(RetrieveAPIView):
             response = {
                 'success': 'false',
                 'status code': status.HTTP_400_BAD_REQUEST,
-                'message': 'User does not exists',
+                'message': 'User Profile does not exists',
                 'error': str(e)
                 }
         return Response(response, status=status_code)

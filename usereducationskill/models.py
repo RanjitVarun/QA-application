@@ -1,5 +1,5 @@
 from django.db import models
-import login.models as login
+from login.models import User
 
 
 class Education(models.Model):
@@ -30,7 +30,7 @@ class Board(models.Model):
         db_table = "board"               
 
 class EducationRelUser(models.Model): 
-    user=models.ForeignKey(login.User, on_delete=models.CASCADE,related_name="user_relation")
+    user=models.ForeignKey(User, on_delete=models.CASCADE,related_name="user_relation")
     degree=models.ForeignKey(Education, on_delete=models.CASCADE,related_name="degree_relation") 
     course=models.ForeignKey(Course, on_delete=models.CASCADE,related_name="course_relation")
     board=models.ForeignKey(Board, on_delete=models.CASCADE,related_name="board_relation")
@@ -54,7 +54,7 @@ class Skillset(models.Model):
 
 class skillsetRel(models.Model):
     skill=models.ForeignKey(Skillset, on_delete=models.CASCADE,related_name="skill_set") 
-    user=models.ForeignKey(login.User, on_delete=models.CASCADE,related_name="user_skill")
+    user=models.ForeignKey(User, on_delete=models.CASCADE,related_name="user_skill")
     
     def __str__(self): 
        return '%s %s' % (self.skill, self.user)    

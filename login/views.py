@@ -7,19 +7,19 @@ import login.serializer as serializerall
 from login.models import User
 from django.contrib.auth import authenticate, login, logout
 from rest_framework_jwt.settings import api_settings
-from django.contrib.auth.models import update_last_login
+from django.contrib.auth.models import update_last_login,PermissionsMixin
 from django.contrib.auth import authenticate,login
 from userdetails.models import Email, Mobile
 from rest_framework import serializers
 from django.contrib.sessions.backends.db import SessionStore
 from django.core.exceptions import PermissionDenied 
 from django.contrib.auth.hashers import check_password
+from userprofile.models import UserProfile
+
 
 
 JWT_PAYLOAD_HANDLER = api_settings.JWT_PAYLOAD_HANDLER
 JWT_ENCODE_HANDLER = api_settings.JWT_ENCODE_HANDLER
-
-
 
 class UserRegistrationView(CreateAPIView):
 
@@ -29,7 +29,16 @@ class UserRegistrationView(CreateAPIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        profile_data = serializer.validated_data.pop('profile')
+        user = User.objects.create_user(**serializer.validated_data)
+        UserProfile.objects.create(
+            user=user,
+            first_name=profile_data['first_name'],
+            last_name=profile_data['last_name'],
+            phone_number=profile_data['phone_number'],
+            age=profile_data['age'],
+            gender=profile_data['gender']
+             )   
         status_code = status.HTTP_201_CREATED
         response = {
             'success' : 'True',

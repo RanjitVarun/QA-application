@@ -17,6 +17,5 @@ urlpatterns = [
    path('addresaddress/',views.ResAddressCreateView.as_view()),
    path('<pk>/updateresaddress/',views.ResAddressUpdateView.as_view()),
    path('<pk>/deleteresaddress/',views.ResAddressDeleteView.as_view()),
-
 ]
 

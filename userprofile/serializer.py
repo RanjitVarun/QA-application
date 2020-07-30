@@ -8,3 +8,9 @@ class ProfileSerializer(serializers.ModelSerializer):
             'id','first_name',
             "last_name")
 
+
+class NameSerializer(serializers.ModelSerializer):    
+    class Meta:        
+        model =UserProfile      
+        fields =('first_name',
+            "last_name")

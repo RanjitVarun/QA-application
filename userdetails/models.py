@@ -1,6 +1,6 @@
 from django.db import models
 import login.models as login
-import userprofile.models as userprofile
+from userprofile.models import UserProfile
 from django.core.validators import MinValueValidator
 from phone_field import PhoneField
 

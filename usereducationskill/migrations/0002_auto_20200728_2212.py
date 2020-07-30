@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('usereduskill', '0001_initial'),
+        ('usereducationskill', '0001_initial'),
     ]
 
     operations = [

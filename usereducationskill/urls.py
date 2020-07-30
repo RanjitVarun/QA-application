@@ -1,5 +1,5 @@
 from django.urls import path
-import usereduskill.views as views
+import usereducationskill.views as views
 
 
 urlpatterns = [

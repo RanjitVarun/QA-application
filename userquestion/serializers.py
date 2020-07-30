@@ -1,35 +1,35 @@
 from rest_framework import serializers
-import userquestion.models as userquestionmodels
-import usereduskill.models as usereduskill
-import login.models as login
-import userprofile.models as profile
+from userquestion.models import Question,Answer,Votes,Comments
+from usereducationskill.models import Skillset
+from login.models import User
+from userprofile.models import UserProfile
 from userprofile.serializer import ProfileSerializer
 
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:        
-        model = userquestionmodels.Question 
+        model = Question 
         fields="__all__"
 
 class CommentSerializer(serializers.ModelSerializer):  
     class Meta:        
-        model = userquestionmodels.Comments    
+        model = Comments    
         fields = "__all__"
 
 class VotesSerializer(serializers.ModelSerializer):  
     class Meta:        
-        model = userquestionmodels.Votes    
+        model = Votes    
         fields = "__all__"
 
 class AnswerSerializer(serializers.ModelSerializer): 
     class Meta:        
-        model = userquestionmodels.Answer     
+        model = Answer     
         fields = "__all__"
 
 class AnswerRelSerializer(serializers.ModelSerializer): 
     comments_relation=CommentSerializer(many=True, read_only=True)
     votes_relation =VotesSerializer(many=True, read_only=True)
     class Meta:        
-        model = userquestionmodels.Answer     
+        model = Answer     
         fields = ("id","user","answer","comments_relation","votes_relation")   
 
 class UserRelQuestion(serializers.ModelSerializer):
@@ -37,7 +37,7 @@ class UserRelQuestion(serializers.ModelSerializer):
      question_user=QuestionSerializer(many=True, read_only=True)
      answer_user=AnswerRelSerializer(many=True, read_only=True)
      class Meta:
-         model= login.User
+         model= User
          fields =(
             'id','profile',
             "question_user","answer_user") 
@@ -53,12 +53,12 @@ class QuestionInfoSerializer(serializers.ModelSerializer):
             "answer_relation",
             "question_user"
         )
-        model = userquestionmodels.Question
+        model = Question
 
 class SkillRelQuestion(serializers.ModelSerializer):
      question_skill=QuestionInfoSerializer(many=True, read_only=True)
      class Meta:
-         model= usereduskill.Skillset
+         model= Skillset
          fields =("mainskill","question_skill")        
 
          

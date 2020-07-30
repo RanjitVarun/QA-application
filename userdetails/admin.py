@@ -1,7 +1,7 @@
 from django.contrib import admin
-import userdetails.models as userdetailmodels
+from userdetails.models import Email, Mobile,OfficeAddress, ResAddress
 
-admin.site.register(userdetailmodels.Email)
-admin.site.register(userdetailmodels.Mobile)
-admin.site.register(userdetailmodels.OfficeAddress)
-admin.site.register(userdetailmodels.ResAddress)
+admin.site.register(Email)
+admin.site.register(Mobile)
+admin.site.register(OfficeAddress)
+admin.site.register(ResAddress)

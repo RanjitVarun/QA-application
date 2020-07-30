@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('usereduskill', '0003_auto_20200728_2219'),
+        ('usereducationskill', '0003_auto_20200728_2219'),
     ]
 
     operations = [

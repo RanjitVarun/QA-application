@@ -3,56 +3,57 @@ from django.http import HttpResponse
 from rest_framework import generics, serializers, views, exceptions
 from django.http import HttpResponse
 from rest_framework.response import Response
-import userquestion.models as model
-import login.models as usermodels
-import usereduskill.models as usereduskill
-import userquestion.serializers as serializer
+from login.models import User
+from userquestion.models import Question,Answer,Votes,Comments
+from userquestion.serializers import (QuestionSerializer,QuestionInfoSerializer,AnswerSerializer,AnswerRelSerializer,
+CommentSerializer,VotesSerializer,UserRelQuestion,SkillRelQuestion)
+from usereducationskill.models import Skillset
 
 class QuestionListView(generics.ListCreateAPIView):
-    queryset = model.Question.objects.all()
-    serializer_class = serializer.QuestionSerializer
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
 
 class QuestionDeleteView(generics.DestroyAPIView):
-    queryset = model.Question.objects.all()
-    serializer_class = serializer.QuestionSerializer    
+    queryset =Question.objects.all()
+    serializer_class = QuestionSerializer    
 
 class QuestionDetailView(generics.ListCreateAPIView):
-    queryset = model.Question.objects.all()
-    serializer_class = serializer.QuestionInfoSerializer
+    queryset = Question.objects.all()
+    serializer_class = QuestionInfoSerializer
 
 class AnswerListView(generics.ListCreateAPIView):
-    queryset = model.Answer.objects.all()
-    serializer_class = serializer.AnswerSerializer
+    queryset = Answer.objects.all()
+    serializer_class = AnswerSerializer
 
 class AnswerDeleteView(generics.DestroyAPIView):
-    queryset =  model.Answer.objects.all()
-    serializer_class =serializer.AnswerSerializer   
+    queryset =  Answer.objects.all()
+    serializer_class =AnswerSerializer   
 
 class CommentListView(generics.ListCreateAPIView):
-    queryset = model.Comments.objects.all()
-    serializer_class = serializer.CommentSerializer
+    queryset = Comments.objects.all()
+    serializer_class =CommentSerializer
 
 class CommentDeleteView(generics.DestroyAPIView):
-    queryset =  model.Comments.objects.all()
-    serializer_class =serializer.CommentSerializer
+    queryset =  Comments.objects.all()
+    serializer_class =CommentSerializer
 
 class VotesListView(generics.ListCreateAPIView):
-    queryset = model.Votes.objects.all()
-    serializer_class = serializer.VotesSerializer
+    queryset = Votes.objects.all()
+    serializer_class = VotesSerializer
 
 class VoteDeleteView(generics.DestroyAPIView):
-    queryset =  model.Votes.objects.all()
-    serializer_class =serializer.VotesSerializer
+    queryset =  Votes.objects.all()
+    serializer_class =VotesSerializer
 
 class UserQnListView(generics.ListAPIView):
-    queryset = usermodels.User.objects.all()
-    serializer_class = serializer.UserRelQuestion
+    queryset = User.objects.all()
+    serializer_class = UserRelQuestion
 
 class SkillQnListView(generics.ListCreateAPIView):
-    queryset = usereduskill.Skillset.objects.all()
-    serializer_class = serializer.SkillRelQuestion
+    queryset = Skillset.objects.all()
+    serializer_class = SkillRelQuestion
 
 class SkillQnDetailsView(generics.RetrieveAPIView):
-    queryset = usereduskill.Skillset.objects.all()
-    serializer_class = serializer.SkillRelQuestion
+    queryset = Skillset.objects.all()
+    serializer_class = SkillRelQuestion
 

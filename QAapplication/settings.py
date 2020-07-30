@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'phone_field',
-    'usereduskill',
+    'usereducationskill',
     'corsheaders',
     'userprofile',
     'userdetails',

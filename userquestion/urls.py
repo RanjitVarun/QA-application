@@ -1,8 +1,6 @@
 from django.urls import path
 import  userquestion.views as view
 
-
-
 urlpatterns = [
      path('',view.QuestionListView.as_view()),
      path('<pk>/delete/',view.QuestionDeleteView.as_view()),

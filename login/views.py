@@ -74,12 +74,14 @@ class UserLoginView(CreateAPIView):
         payload = JWT_PAYLOAD_HANDLER(user)
         user_id=payload['user_id']
         jwt_token = JWT_ENCODE_HANDLER(payload)
-        if request.session['_auth_user_id'] == user_id:
+        sessions=request.session
+        if "_auth_user_id" in sessions:
+            print("present")
             raise serializers.ValidationError(
                   'User already logged In'
-                  )   
+                  ) 
         else:
-             pass   
+            pass
         login(request,user)
         update_last_login(None, user)    
         response = {
@@ -87,7 +89,8 @@ class UserLoginView(CreateAPIView):
                 'status code' : status.HTTP_200_OK,
                 'message': 'User logged in  successfully',
                 'user_id':user_id,
-                'token' : jwt_token}    
+                'token' : jwt_token,
+               }    
         status_code = status.HTTP_200_OK
         return Response(response, status=status_code)
         
@@ -109,7 +112,7 @@ class UserLogoutView(CreateAPIView):
         return Response(response)
 
 
-class ForgotPassword(CreateAPIView):
+class UpdatePassword(CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = serializerall.UserLoginSerializer
 

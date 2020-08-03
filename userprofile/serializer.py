@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from userprofile.models import UserProfile
+from login.models import User
 
 class ProfileSerializer(serializers.ModelSerializer):    
     class Meta:        
@@ -8,9 +9,11 @@ class ProfileSerializer(serializers.ModelSerializer):
             'id','first_name',
             "last_name")
 
+class UserNameSerializer(serializers.Serializer):
+    first_name = serializers.CharField(max_length=128)
 
-class NameSerializer(serializers.ModelSerializer):    
+class UserNameListSerializer(serializers.ModelSerializer):  
+    profile=ProfileSerializer(read_only=True)
     class Meta:        
-        model =UserProfile      
-        fields =('first_name',
-            "last_name")
+        model =User    
+        fields =("id","profile")

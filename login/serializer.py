@@ -7,15 +7,15 @@ from django.contrib.auth.models import update_last_login
 from rest_framework import serializers
 
 
-class UserSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ('first_name', 'last_name', 'phone_number', 'age', 'gender')
+        fields = ('first_name','last_name', 'phone_number', 'age', 'gender')
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
 
-    profile = UserSerializer(required=False)
+    profile = ProfileSerializer(required=False)
 
     class Meta:
         model = User

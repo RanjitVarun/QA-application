@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from userdetails.models  import Email,Mobile,ResAddress,OfficeAddress
 import userdetails.serializer as serializer
+from userdetails.serializer import EmailSerializer, MobileSerializer, AddUserDetailsSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import permissions, status
 from django.db import Error
@@ -18,8 +19,9 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from login.models import User
 
 
+
 class EmailCreateView(generics.CreateAPIView):
-    queryset = Email.objects.all()
+    #queryset = Email.objects.all()
     serializer_class = serializer.EmailSerializer  
 
 class EmailList(RetrieveAPIView):
@@ -41,88 +43,105 @@ class EmailDeleteView(generics.DestroyAPIView):
 class MobileDeleteView(generics.DestroyAPIView):
     queryset = Mobile.objects.all()
     serializer_class = serializer.MobileSerializer 
-
-class OffAddressCreateView(generics.CreateAPIView):
-    queryset = OfficeAddress.objects.all()
-    serializer_class = serializer.OffAddressSerializer
     
 class OffAddressUpdateView(generics.UpdateAPIView):
     queryset = OfficeAddress.objects.all()
     serializer_class = serializer.OffAddressSerializer
 
-class OffAddressDeleteView(generics.DestroyAPIView):
-    queryset = OfficeAddress.objects.all()
-    serializer_class = serializer.OffAddressSerializer
-
-class ResAddressCreateView(generics.CreateAPIView):
-    queryset = ResAddress.objects.all()
-    serializer_class = serializer.ResAddressSerializer  
-
 class ResAddressUpdateView(generics.UpdateAPIView):
     queryset = ResAddress.objects.all()
     serializer_class = serializer.ResAddressSerializer 
-
-class ResAddressDeleteView(generics.DestroyAPIView):
-    queryset =ResAddress.objects.all()
-    serializer_class = serializer.ResAddressSerializer    
-
-class ResAddressView(RetrieveAPIView):
+ 
+class GetUserDetailsView(generics.ListAPIView):
 
     permission_classes = (IsAuthenticated,)
+    serializer_class = serializer.AddUserDetailsSerializer
     authentication_class = JSONWebTokenAuthentication
 
     def get(self, request):
         try:
-            user_address = ResAddress.objects.get(user=request.user)
-            print(request.user)
-            serialize=serializer.ResAddressSerializer(user_address)
+            res_address = ResAddress.objects.get(user=request.user)
+            res_data=serializer.ResAddressSerializer(res_address)
+            off_address = OfficeAddress.objects.get(user=request.user)
+            office_data=serializer.OffAddressSerializer(off_address)
             status_code = status.HTTP_200_OK
             response = {
                 'success': 'true',
                 'status code': status_code,
-                'message': 'User Residential Address fetched successfully',
-                'data': [{
-                    'address':serialize.data }] }
+                'message': 'User Details fetched successfully',
+                 'data': [{
+                'residential':res_data.data,
+                'office':office_data.data }]
+                }
 
         except Exception as e:
             status_code = status.HTTP_400_BAD_REQUEST
             response = {
                 'success': 'false',
                 'status code': status.HTTP_400_BAD_REQUEST,
-                'message': 'No address added for this user',
+                'message': 'User Details cannot be fetched',
                 'error': str(e)
                 }
         return Response(response, status=status_code)
 
 
-class OfficeAddressView(RetrieveAPIView):
+class AddUserDetailsView(generics.CreateAPIView):
 
     permission_classes = (IsAuthenticated,)
+    serializer_class = serializer.AddUserDetailsSerializer
     authentication_class = JSONWebTokenAuthentication
 
-    def get(self, request):
+    def post(self, request):
         try:
-            user_address = model.OfficeAddress.objects.get(user=request.user)
-            serialize=serializer.OffAddressSerializer(user_address)
+            serializer = self.serializer_class(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            user = User.objects.get(email=request.user)
+            email_data=serializer.validated_data.pop('email')
+            mobile_data=serializer.validated_data.pop('mobile')
+            res_data=serializer.validated_data.pop('resaddress')
+            office_data=serializer.validated_data.pop('officeaddress')
+            Email.objects.create(user=user,email=email_data['email'])
+            Mobile.objects.create(user=user,mobile=mobile_data['mobile'])
+            ResAddress.objects.create(
+                user=user,
+                line1=res_data['line1'],
+                line2=res_data['line2'],
+                line3=res_data['line3'],
+                landmark=res_data['landmark'],
+                state=res_data['state'],
+                pin=res_data['pin']
+            )
+            OfficeAddress.objects.create(
+                user=user,
+                line1=office_data['line1'],
+                line2=office_data['line2'],
+                line3=office_data['line3'],
+                landmark=office_data['landmark'],
+                state=office_data['state'],
+                pin=office_data['pin']
+            )
             status_code = status.HTTP_200_OK
             response = {
                 'success': 'true',
                 'status code': status_code,
-                'message': 'User Office Address fetched successfully',
+                'message': 'User Details Added successfully',
                 'data': [{
-                'address':serialize.data }]}
+                    'email':email_data,
+                    'mobile':mobile_data,
+                    'residential':res_data,
+                    'office':office_data
+                    }]
+                }
 
         except Exception as e:
             status_code = status.HTTP_400_BAD_REQUEST
             response = {
                 'success': 'false',
                 'status code': status.HTTP_400_BAD_REQUEST,
-                'message': 'No address added for this user',
+                'message': 'User Details cannot be updated',
                 'error': str(e)
                 }
         return Response(response, status=status_code)
-
-
 
 
         

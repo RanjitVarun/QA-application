@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate
 from login.models import User
 from userprofile.serializer import ProfileSerializer
 
+
 class EmailSerializer(serializers.ModelSerializer):    
     class Meta:        
         model = Email       
@@ -21,6 +22,7 @@ class MobileSerializer(serializers.ModelSerializer):
         model = Mobile        
         fields = ("id","mobile")
 
+
 class MobileUserSerializer(serializers.ModelSerializer):
     mobiles=MobileSerializer(many=True, read_only=True)    
     class Meta:        
@@ -30,10 +32,20 @@ class MobileUserSerializer(serializers.ModelSerializer):
 class ResAddressSerializer(serializers.ModelSerializer):    
     class Meta:        
         model =   ResAddress     
-        fields = "__all__"
+        fields = ("id","line1","line2","line3","landmark","state","pin")
             
 class OffAddressSerializer(serializers.ModelSerializer):    
     class Meta:        
         model =  OfficeAddress     
-        fields = "__all__"
+        fields = ("id","line1","line2","line3","landmark","state","pin")
 
+class AddUserDetailsSerializer(serializers.ModelSerializer):
+
+    email = EmailSerializer(required=False)
+    mobile = MobileSerializer(required=False)
+    resaddress=ResAddressSerializer(required=False)
+    officeaddress=OffAddressSerializer(required=False)
+
+    class Meta:
+        model = User
+        fields = ('email', 'mobile','resaddress','officeaddress')

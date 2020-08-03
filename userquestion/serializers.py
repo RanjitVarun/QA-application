@@ -9,7 +9,7 @@ class QuestionSerializer(serializers.ModelSerializer):
     class Meta:        
         model = Question 
         fields="__all__"
-
+    
 class CommentSerializer(serializers.ModelSerializer):  
     class Meta:        
         model = Comments    
@@ -44,14 +44,13 @@ class UserRelQuestion(serializers.ModelSerializer):
 
 class QuestionInfoSerializer(serializers.ModelSerializer):
    
-   question_user=UserRelQuestion(many=True, read_only=True) 
    answer_relation = AnswerRelSerializer(many=True, read_only=True)
    class Meta:
         fields = (
+            'id',
             "question",
             'user',
             "answer_relation",
-            "question_user"
         )
         model = Question
 

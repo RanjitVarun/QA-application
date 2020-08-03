@@ -3,57 +3,66 @@ from django.http import HttpResponse
 from rest_framework import generics, serializers, views, exceptions
 from django.http import HttpResponse
 from rest_framework.response import Response
+from rest_framework import status
 from login.models import User
 from userquestion.models import Question,Answer,Votes,Comments
 from userquestion.serializers import (QuestionSerializer,QuestionInfoSerializer,AnswerSerializer,AnswerRelSerializer,
 CommentSerializer,VotesSerializer,UserRelQuestion,SkillRelQuestion)
 from usereducationskill.models import Skillset
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-class QuestionListView(generics.ListCreateAPIView):
-    queryset = Question.objects.all()
+#question create,delete,
+class QuestionCreateView(generics.CreateAPIView):
     serializer_class = QuestionSerializer
 
-class QuestionDeleteView(generics.DestroyAPIView):
-    queryset =Question.objects.all()
+class QuestionUpdateView(generics.UpdateAPIView):
     serializer_class = QuestionSerializer    
 
-class QuestionDetailView(generics.ListCreateAPIView):
-    queryset = Question.objects.all()
-    serializer_class = QuestionInfoSerializer
+class QuestionDeleteView(generics.DestroyAPIView):
+    serializer_class = QuestionSerializer    
 
-class AnswerListView(generics.ListCreateAPIView):
-    queryset = Answer.objects.all()
+#answer create,delete,
+class AnswerCreateView(generics.CreateAPIView):
     serializer_class = AnswerSerializer
 
-class AnswerDeleteView(generics.DestroyAPIView):
-    queryset =  Answer.objects.all()
-    serializer_class =AnswerSerializer   
+class AnswerUpdateView(generics.UpdateAPIView):
+    serializer_class = AnswerSerializer   
 
-class CommentListView(generics.ListCreateAPIView):
-    queryset = Comments.objects.all()
+class AnswerDeleteView(generics.DestroyAPIView):
+    serializer_class =AnswerSerializer  
+
+#comment create,delete,
+class CommentCreateView(generics.CreateAPIView):
     serializer_class =CommentSerializer
+
+class CommentUpdateView(generics.UpdateAPIView):
+    serializer_class = CommentSerializer
 
 class CommentDeleteView(generics.DestroyAPIView):
-    queryset =  Comments.objects.all()
     serializer_class =CommentSerializer
 
-class VotesListView(generics.ListCreateAPIView):
-    queryset = Votes.objects.all()
+#votes create,delete,
+class VotesCreateView(generics.CreateAPIView):
     serializer_class = VotesSerializer
 
 class VoteDeleteView(generics.DestroyAPIView):
-    queryset =  Votes.objects.all()
     serializer_class =VotesSerializer
 
-class UserQnListView(generics.ListAPIView):
+#all question list
+class QuestionListView(generics.ListAPIView): 
+    queryset = Question.objects.all()
+    serializer_class = QuestionInfoSerializer
+
+#user specific question,answer,comment,votes
+class UserQnListView(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserRelQuestion
 
-class SkillQnListView(generics.ListCreateAPIView):
-    queryset = Skillset.objects.all()
-    serializer_class = SkillRelQuestion
-
+#skill specific question,answer,comments,votes
 class SkillQnDetailsView(generics.RetrieveAPIView):
     queryset = Skillset.objects.all()
-    serializer_class = SkillRelQuestion
+    serializer_class = SkillRelQuestion    
 
+         
+       

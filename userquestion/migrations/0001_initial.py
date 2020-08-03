@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
                 ('question', models.CharField(max_length=255)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('last_modified', models.DateTimeField(auto_now=True)),
-                ('skill', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='question_skill', to='usereduskill.Skillset')),
+                ('skill', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='question_skill', to='usereducationskill.Skillset')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='question_user', to=settings.AUTH_USER_MODEL)),
             ],
             options={

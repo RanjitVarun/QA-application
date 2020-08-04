@@ -8,7 +8,17 @@ from userprofile.serializer import ProfileSerializer
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:        
         model = Question 
-        fields="__all__"
+        fields=("id","question","skill")
+
+class CommentRelSerializer(serializers.ModelSerializer):  
+    class Meta:        
+        model = Comments    
+        fields = ("id","answer","comments")  
+
+class VotesRelSerializer(serializers.ModelSerializer):  
+    class Meta:        
+        model = Votes    
+        fields = ("id","answer","votes")  
     
 class CommentSerializer(serializers.ModelSerializer):  
     class Meta:        
@@ -23,14 +33,14 @@ class VotesSerializer(serializers.ModelSerializer):
 class AnswerSerializer(serializers.ModelSerializer): 
     class Meta:        
         model = Answer     
-        fields = "__all__"
+        fields = ("id","answer","question")
 
 class AnswerRelSerializer(serializers.ModelSerializer): 
     comments_relation=CommentSerializer(many=True, read_only=True)
     votes_relation =VotesSerializer(many=True, read_only=True)
     class Meta:        
         model = Answer     
-        fields = ("id","user","answer","comments_relation","votes_relation")   
+        fields = ("id","user","answer","name","comments_relation","votes_relation")   
 
 class UserRelQuestion(serializers.ModelSerializer):
      profile=ProfileSerializer(read_only=True)
@@ -43,12 +53,12 @@ class UserRelQuestion(serializers.ModelSerializer):
             "question_user","answer_user") 
 
 class QuestionInfoSerializer(serializers.ModelSerializer):
-   
    answer_relation = AnswerRelSerializer(many=True, read_only=True)
    class Meta:
         fields = (
             'id',
             "question",
+            "name",
             'user',
             "answer_relation",
         )

@@ -1,4 +1,3 @@
-
 from django.shortcuts import render
 from rest_framework import generics, serializers, views, exceptions,status
 from django.http import HttpResponse
@@ -14,12 +13,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from login.models import User
 
-#skill and skilluserrelation 
-
-# class SkillsetCreateView(generics.CreateAPIView):
-#     queryset = skillsetRel.objects.all()
-#     serializer_class = SkillsetSerializer  
- 
 class SkillUserView(generics.ListCreateAPIView): 
     permission_classes = (IsAuthenticated,)
     authentication_class = JSONWebTokenAuthentication
@@ -34,7 +27,7 @@ class SkillUserView(generics.ListCreateAPIView):
             user=user,
             skill=skill_details
             )
-        status_code = status.HTTP_200_OK
+        status_code = status.HTTP_201_CREATED
         response = {
                 'success': 'true',
                 'status code': status_code,
@@ -92,7 +85,7 @@ class UserEducationView(generics.ListCreateAPIView):
             degree=Education.objects.get(degree=serializer.validated_data.pop('degree')),
             board=Board.objects.get(board=serializer.validated_data.pop('board'))
             )
-        status_code = status.HTTP_200_OK
+        status_code = status.HTTP_201_CREATED
         response = {
                 'success': 'true',
                 'status code': status_code,
@@ -122,7 +115,6 @@ class UserEducationView(generics.ListCreateAPIView):
         return Response(response, status=status_code)
     
           
-
 
 
 

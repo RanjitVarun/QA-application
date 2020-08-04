@@ -7,6 +7,7 @@ class Question(models.Model):
     question=models.TextField(blank = False,null=False)
     skill=models.ForeignKey(Skillset, on_delete=models.CASCADE,related_name="question_skill" ) 
     created = models.DateTimeField(auto_now_add=True, editable=False, null=False, blank=False)
+    name=models.CharField(max_length=50, unique=False, default="")
     last_modified = models.DateTimeField(auto_now=True, editable=False, null=False, blank=False) 
   
     def __str__(self): 
@@ -18,6 +19,7 @@ class Question(models.Model):
 class Answer(models.Model): 
     user=models.ForeignKey(User, on_delete=models.CASCADE,related_name="answer_user" ) 
     answer=models.TextField(blank = False,null=False)
+    name=models.CharField(max_length=50, unique=False, default="")
     question=models.ForeignKey(Question, on_delete=models.CASCADE,related_name="answer_relation" ) 
     created = models.DateTimeField(auto_now_add=True, editable=False, null=False, blank=False)
 
@@ -30,7 +32,8 @@ class Answer(models.Model):
 
 class Comments(models.Model): 
     user=models.ForeignKey(User, on_delete=models.CASCADE,related_name="comments" ) 
-    Comments=models.TextField(blank = False,null=False)
+    comments=models.TextField(blank = False,null=False)
+    name=models.CharField(max_length=50, unique=False, default="")
     answer=models.ForeignKey(Answer, on_delete=models.CASCADE,related_name="comments_relation" ) 
     created = models.DateTimeField(auto_now_add=True, editable=False, null=False, blank=False)
 

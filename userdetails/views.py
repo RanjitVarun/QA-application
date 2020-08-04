@@ -19,23 +19,12 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from login.models import User
 
 
-
 class EmailCreateView(generics.CreateAPIView):
-    #queryset = Email.objects.all()
     serializer_class = serializer.EmailSerializer  
 
-class EmailList(RetrieveAPIView):
-    queryset=User.objects.all()
-    serializer_class=serializer.EmailUserSerializer
-
-class MobileCreateView(generics.ListCreateAPIView):
-    queryset = Mobile.objects.all()
+class MobileCreateView(generics.CreateAPIView):
     serializer_class = serializer.MobileSerializer   
-
-class MobileList(RetrieveAPIView):
-    queryset=Mobile.objects.all()
-    serializer_class=serializer.MobileUserSerializer    
-
+ 
 class EmailDeleteView(generics.DestroyAPIView):
     queryset = Email.objects.all()
     serializer_class = serializer.EmailSerializer
@@ -52,7 +41,7 @@ class ResAddressUpdateView(generics.UpdateAPIView):
     queryset = ResAddress.objects.all()
     serializer_class = serializer.ResAddressSerializer 
  
-class GetUserDetailsView(generics.ListAPIView):
+class AddUserDetailsView(generics.ListCreateAPIView):
 
     permission_classes = (IsAuthenticated,)
     serializer_class = serializer.AddUserDetailsSerializer
@@ -64,12 +53,17 @@ class GetUserDetailsView(generics.ListAPIView):
             res_data=serializer.ResAddressSerializer(res_address)
             off_address = OfficeAddress.objects.get(user=request.user)
             office_data=serializer.OffAddressSerializer(off_address)
+            user=User.objects.get(email=request.user)
+            email_data=serializer.EmailUserSerializer(user)
+            mobile_data=serializer.MobileUserSerializer(user)
             status_code = status.HTTP_200_OK
             response = {
                 'success': 'true',
                 'status code': status_code,
                 'message': 'User Details fetched successfully',
                  'data': [{
+                     'email':email_data.data,
+                     'mobile':mobile_data.data,
                 'residential':res_data.data,
                 'office':office_data.data }]
                 }
@@ -83,13 +77,6 @@ class GetUserDetailsView(generics.ListAPIView):
                 'error': str(e)
                 }
         return Response(response, status=status_code)
-
-
-class AddUserDetailsView(generics.CreateAPIView):
-
-    permission_classes = (IsAuthenticated,)
-    serializer_class = serializer.AddUserDetailsSerializer
-    authentication_class = JSONWebTokenAuthentication
 
     def post(self, request):
         try:
@@ -125,12 +112,6 @@ class AddUserDetailsView(generics.CreateAPIView):
                 'success': 'true',
                 'status code': status_code,
                 'message': 'User Details Added successfully',
-                'data': [{
-                    'email':email_data,
-                    'mobile':mobile_data,
-                    'residential':res_data,
-                    'office':office_data
-                    }]
                 }
 
         except Exception as e:

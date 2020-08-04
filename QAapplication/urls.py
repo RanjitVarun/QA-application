@@ -24,7 +24,7 @@ urlpatterns = [
     path('register/',include('login.urls')),
     path('dashboard/',include('dashboard.urls')),
     path('userdetails/',include('userdetails.urls')),
-    path('usereduskill/',include('usereducationskill.urls')),
+    path('education/',include('usereducationskill.urls')),
     path('question/',include('userquestion.urls')),
     path('admin/', admin.site.urls)
 ]

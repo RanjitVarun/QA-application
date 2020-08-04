@@ -29,7 +29,7 @@ class BoardCourseSerializer(serializers.Serializer):
 class EduSerializer(serializers.ModelSerializer):
     class Meta:        
         model =   EducationRelUser    
-        fields = "__all__" 
+        fields = ("course","board","degree")
         
 
 class EduRelSerializer(serializers.ModelSerializer):
@@ -44,18 +44,21 @@ class SkillSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class SkillsetSerializer(serializers.ModelSerializer):
-    class Meta:        
-        model =   skillsetRel    
-        fields = "__all__"
-
-class SkillRelSerializer(serializers.ModelSerializer):
     skill=SkillSerializer()
     class Meta:        
         model =   skillsetRel    
-        fields = ("user","skill")       
+        fields = ("id","skill")
      
-    
+class SkillUserSerializer(serializers.ModelSerializer):
+    class Meta:        
+        model =   skillsetRel    
+        fields = ("id","skill")     
 
+class SkillRelSerializer(serializers.ModelSerializer):
+    user_skill=SkillsetSerializer(many=True)   
+    class Meta:        
+        model = User      
+        fields = ("id","user_skill")
 
 
 
